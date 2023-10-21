@@ -5,6 +5,13 @@ import com.rpl.rama.module.*;
 import com.rpl.rama.test.*;
 import java.util.*;
 
+/*
+ * This module is from the tutorial before distributed programming and partitioners
+ * are introduced: https://redplanetlabs.com/docs/~/tutorial2.html
+ *
+ * In reality this module would need a call to .hashPartition if deploying with
+ * more than one task.
+ */
 public class PageAnalyticsModule implements RamaModule {
     @Override
     public void define(Setup setup, Topologies topologies) {
@@ -20,8 +27,13 @@ public class PageAnalyticsModule implements RamaModule {
         s.source("*depot").out("*pageVisit")
                 .each((Map<String, Object> visit) -> visit.get("sessionId"), "*pageVisit").out("*sessionId")
                 .each((Map<String, Object> visit) -> visit.get("path"), "*pageVisit").out("*path")
+                .each((Map<String, Object> visit) -> {
+                  Map ret = new HashMap(visit);
+                  ret.remove("sessionId");
+                  return ret;
+                }, "*pageVisit").out("*thinPageVisit")
                 .compoundAgg("$$pageViewCount", CompoundAgg.map("*path", Agg.count()))
-                .compoundAgg("$$sessionHistory", CompoundAgg.map("*sessionId", Agg.list("*pageVisit")))
+                .compoundAgg("$$sessionHistory", CompoundAgg.map("*sessionId", Agg.list("*thinPageVisit")))
         ;
     }
 
