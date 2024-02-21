@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.rpl</groupId>
             <artifactId>rama-helpers</artifactId>
-            <version>0.9.1</version>
+            <version>0.9.3</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -33,7 +33,7 @@
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-all</artifactId>
           <!-- any version of Groovy \>= 1.5.0 should work here -->
-          <version>3.0.19</version>
+          <version>3.0.20</version>
           <type>pom</type>
         </dependency>
     </dependencies>
